@@ -89,34 +89,55 @@
             color: #1f2937; /* Asegurar texto oscuro en el contenido */
         }
 
-        /* --- Estilos del Calendario --- */
+        /* --- Estilos del Calendario (Ajuste para Móviles) --- */
         .calendar-grid {
-            /* Usar 1fr asegura que todas las columnas tengan el mismo ancho */
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            gap: 4px;
+            gap: 2px; /* Reducir gap en móvil para ganar espacio */
         }
         .calendar-day {
-            min-height: 80px; 
+            /* Configuraciones base para móvil */
+            min-height: 60px; 
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center; 
-            padding: 4px; 
+            padding: 2px; /* Reducir padding en móvil */
             border-radius: 6px;
             text-align: center;
             font-weight: 600;
-            font-size: 0.8rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra más sutil */
-            opacity: 1; /* Opacidad completa */
-            cursor: pointer; /* Añadir puntero para indicar interactividad */
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones suaves */
+            font-size: 0.7rem; /* Fuente más pequeña para 7 columnas */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            opacity: 1; 
+            cursor: pointer; 
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
         }
-        /* Efecto al pasar el cursor */
         .calendar-day:hover {
-            transform: translateY(-2px); /* Ligeramente elevado */
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* Sombra más pronunciada */
-            z-index: 10; /* Asegurar que se muestre sobre los vecinos si hay solapamiento */
+            transform: translateY(-2px); 
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); 
+            z-index: 10; 
+        }
+        
+        .day-number { 
+            font-size: 0.9rem; /* Número de día más pequeño en móvil */
+            margin-bottom: 1px; 
+            font-weight: bold; 
+        }
+
+        /* Ajustes para Tablet y Escritorio (sm: 640px) */
+        @media (min-width: 640px) {
+            .calendar-grid {
+                gap: 4px;
+            }
+            .calendar-day {
+                min-height: 80px; 
+                padding: 4px; 
+                font-size: 0.8rem;
+            }
+            .day-number { 
+                font-size: 1.1rem;
+                margin-bottom: 2px; 
+            }
         }
         
         /* Etiquetas de Calendario - COLORES SINCRONIZADOS CON CHART (fondos brillantes) */
@@ -133,8 +154,6 @@
         /* Día de descanso con fondo claro y texto oscuro */
         .cal-Descanso { background-color: #d1d5db; color: #1f2937; border: 1px solid #ffffff;}
 
-        .day-number { font-size: 1.1rem; margin-bottom: 2px; font-weight: bold; }
-        
         .chart-container { position: relative; width: 100%; }
     </style>
 </head>
@@ -186,17 +205,16 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CALENDARIO SUGERIDO (DE VUELTA AL 100% DE ANCHO) -->
+        <!-- SECCIÓN 2: CALENDARIO SUGERIDO (TAMAÑO COMPLETO, RESPONSIVE) -->
         <section id="calendar" class="mb-12">
             <h2 class="text-2xl font-bold text-center primary-color mb-6">Calendario de Rotación (Diciembre)</h2>
-            <!-- Eliminamos el wrapper que limitaba el ancho (md:w-1/2) -->
             <div class="mx-auto w-full"> 
                 <div class="bg-card rounded-lg shadow-xl p-4 md:p-6 border border-gray-200">
                     <div class="calendar-grid text-sm text-gray-600 mb-2 font-bold">
                         <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
                     </div>
                     <div class="calendar-grid" id="calendar-grid-content">
-                        <!-- JS Inyectará los días aquí, comenzando el 1 de Diciembre (Lunes) -->
+                        <!-- JS Inyectará los días aquí -->
                     </div>
                 </div>
             </div>
