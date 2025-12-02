@@ -26,7 +26,6 @@
         }
         
         /* Colores Específicos para tus Rutinas (SINCRONIZADOS CON CALENDARIO y CHART) */
-        /* Usamos los colores brillantes del chart y ajustamos el color del texto para el tema claro. */
         
         /* R1 - Lavender (Pierna/Glúteo - #A78BFA) -> Fondo brillante, Texto Oscuro */
         .accordion-button.R1 { background-color: #A78BFA; color: #1f2937; } 
@@ -109,6 +108,14 @@
             font-size: 0.8rem;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra más sutil */
             opacity: 1; /* Opacidad completa */
+            cursor: pointer; /* Añadir puntero para indicar interactividad */
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; /* Transiciones suaves */
+        }
+        /* Efecto al pasar el cursor */
+        .calendar-day:hover {
+            transform: translateY(-2px); /* Ligeramente elevado */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2); /* Sombra más pronunciada */
+            z-index: 10; /* Asegurar que se muestre sobre los vecinos si hay solapamiento */
         }
         
         /* Etiquetas de Calendario - COLORES SINCRONIZADOS CON CHART (fondos brillantes) */
@@ -178,15 +185,18 @@
             </div>
         </section>
 
-        <!-- SECCIÓN 2: CALENDARIO SUGERIDO -->
+        <!-- SECCIÓN 2: CALENDARIO SUGERIDO (REDUCIDO AL 50% DE ANCHO EN DESKTOP) -->
         <section id="calendar" class="mb-12">
             <h2 class="text-2xl font-bold text-center primary-color mb-6">Calendario de Rotación (Diciembre)</h2>
-            <div class="bg-card rounded-lg shadow-xl p-4 md:p-6 border border-gray-200">
-                <div class="calendar-grid text-sm text-gray-600 mb-2 font-bold">
-                    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
-                </div>
-                <div class="calendar-grid" id="calendar-grid-content">
-                    <!-- JS Inyectará los días aquí, comenzando el 1 de Diciembre (Lunes) -->
+            <!-- Wrapper para limitar el ancho y centrar -->
+            <div class="mx-auto w-full md:w-1/2">
+                <div class="bg-card rounded-lg shadow-xl p-4 md:p-6 border border-gray-200">
+                    <div class="calendar-grid text-sm text-gray-600 mb-2 font-bold">
+                        <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+                    </div>
+                    <div class="calendar-grid" id="calendar-grid-content">
+                        <!-- JS Inyectará los días aquí, comenzando el 1 de Diciembre (Lunes) -->
+                    </div>
                 </div>
             </div>
         </section>
