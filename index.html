@@ -37,18 +37,20 @@
         /* R3 - Pink-Violet (Espalda - #F472B6) -> Fondo brillante, Texto Oscuro */
         .accordion-button.R3 { background-color: #F472B6; color: #1f2937; } 
 
-        /* R4 - Strong Purple (Pierna - #9333EA) -> Fondo brillante, Texto Claro */
-        .accordion-button.R4 { background-color: #9333EA; color: #F3E8FF; } 
+        /* R4 - Magenta Claro (Pierna - #F0A2F9) -> Fondo más claro, Texto Oscuro */
+        .accordion-button.R4 { background-color: #F0A2F9; color: #1f2937; } 
 
         /* Descanso (sin cambios) */
         .accordion-button.Descanso { background-color: #d1d5db; color: #1f2937; border-left-color: #6b7280; }
 
+        /* --- ESTILO ACTIVO (SELECCIONADO) - AHORA NEGRO --- */
         .accordion-button[aria-expanded="true"] {
-            /* Usamos el color primario de acento como fondo activo */
-            background-color: #8B5CF6; 
+            /* Fondo negro para el toque moderno */
+            background-color: #000000; 
             color: white; 
             box-shadow: 0 4px 10px rgba(0,0,0, 0.2);
-            border-left-color: #8B5CF6 !important;
+            /* Borde izquierdo también negro */
+            border-left-color: #000000 !important; 
         }
         
         .accordion-button[aria-expanded="true"] .accordion-arrow { transform: rotate(180deg); }
@@ -112,16 +114,16 @@
         /* Etiquetas de Calendario - COLORES SINCRONIZADOS CON CHART (fondos brillantes) */
         
         /* R1 - Lavender (#A78BFA) -> Fondo brillante, Texto Oscuro */
-        .cal-R1 { background-color: #A78BFA; color: #1f2937; border: 1px solid #8B5CF6;} 
+        .cal-R1 { background-color: #A78BFA; color: #1f2937; border: 1px solid #ffffff;} 
         /* R2 - Purple (#C084FC) -> Fondo brillante, Texto Oscuro */
-        .cal-R2 { background-color: #C084FC; color: #1f2937; border: 1px solid #8B5CF6;} 
+        .cal-R2 { background-color: #C084FC; color: #1f2937; border: 1px solid #ffffff;} 
         /* R3 - Pink-Violet (#F472B6) -> Fondo brillante, Texto Oscuro */
-        .cal-R3 { background-color: #F472B6; color: #1f2937; border: 1px solid #8B5CF6;} 
-        /* R4 - Strong Purple (#9333EA) -> Fondo brillante, Texto Claro */
-        .cal-R4 { background-color: #9333EA; color: #F3E8FF; border: 1px solid #8B5CF6;} 
+        .cal-R3 { background-color: #F472B6; color: #1f2937; border: 1px solid #ffffff;} 
+        /* R4 - Magenta Claro (#F0A2F9) -> Fondo más claro, Texto Oscuro */
+        .cal-R4 { background-color: #F0A2F9; color: #1f2937; border: 1px solid #ffffff;} 
         
         /* Día de descanso con fondo claro y texto oscuro */
-        .cal-Descanso { background-color: #d1d5db; color: #1f2937; border: 1px solid #9ca3af;}
+        .cal-Descanso { background-color: #d1d5db; color: #1f2937; border: 1px solid #ffffff;}
 
         .day-number { font-size: 1.1rem; margin-bottom: 2px; font-weight: bold; }
         
@@ -178,13 +180,13 @@
 
         <!-- SECCIÓN 2: CALENDARIO SUGERIDO -->
         <section id="calendar" class="mb-12">
-            <h2 class="text-2xl font-bold text-center primary-color mb-6">Calendario de Rotación (Ejemplo)</h2>
+            <h2 class="text-2xl font-bold text-center primary-color mb-6">Calendario de Rotación (Diciembre)</h2>
             <div class="bg-card rounded-lg shadow-xl p-4 md:p-6 border border-gray-200">
                 <div class="calendar-grid text-sm text-gray-600 mb-2 font-bold">
                     <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
                 </div>
                 <div class="calendar-grid" id="calendar-grid-content">
-                    <!-- JS Inyectará los días aquí -->
+                    <!-- JS Inyectará los días aquí, comenzando el 1 de Diciembre (Lunes) -->
                 </div>
             </div>
         </section>
@@ -197,8 +199,12 @@
             </div>
         </section>
 
+        <!-- PIE DE PÁGINA ACTUALIZADO CON SUPERÍNDICE AÚN MÁS SUTIL -->
         <footer class="text-center text-gray-500 text-sm pb-8">
-            <p>Generado para Corina Ogarrio R. - Recuerda calentar antes de cada sesión. Eres increíble, no importa cuándo leas esto. MAM.</p>
+            <p>
+                © 2025 Plan de Entrenamiento COR. Desarrollo de Software Integrado. 
+                <sup class="text-[0.65rem] text-gray-300">MAM</sup>
+            </p>
         </footer>
     </div>
 
@@ -243,7 +249,8 @@
                     { name: 'E1: Copa con soga polea', detail: '4 x 12' },
                     { name: 'F1: Hiperextensión espalda 60°', detail: '4 x 15-20' }
                 ]
-            },
+            }
+            ,
             'R4': { 
                 title: 'Rutina 4: Pierna / Glúteo (Enfoque)', 
                 colorClass: 'R4',
@@ -312,21 +319,21 @@
         // --- 3. GENERAR CALENDARIO (ROTACIÓN SIMPLE) ---
         function renderCalendar() {
             const grid = document.getElementById('calendar-grid-content');
+            // Ciclo de rutinas con la abreviatura solicitada
             const cycle = [
-                { id: 'R1', label: 'Rutina 1', css: 'cal-R1' },
-                { id: 'R2', label: 'Rutina 2', css: 'cal-R2' },
-                { id: 'R3', label: 'Rutina 3', css: 'cal-R3' },
-                { id: 'R4', label: 'Rutina 4', css: 'cal-R4' },
+                { id: 'R1', label: 'R1', css: 'cal-R1' },
+                { id: 'R2', label: 'R2', css: 'cal-R2' },
+                { id: 'R3', label: 'R3', css: 'cal-R3' },
+                { id: 'R4', label: 'R4', css: 'cal-R4' },
                 { id: 'Rest', label: 'Descanso', css: 'cal-Descanso' }
             ];
 
-            // Empezamos un día cualquiera (ej: día 1 del mes)
+            const daysInMonth = 31; // Diciembre tiene 31 días.
+            // Diciembre 1 es Lunes (índice 0 en la cuadrícula).
             let html = '';
-            // Se añaden 2 placeholders para que el calendario comience en Miércoles
-            html += `<div class="calendar-day bg-transparent"></div>`; 
-            html += `<div class="calendar-day bg-transparent"></div>`; 
-
-            for(let i = 1; i <= 30; i++) {
+            
+            // 1. Añadir los días (1 al 31)
+            for(let i = 1; i <= daysInMonth; i++) {
                 // Algoritmo de rotación simple: i-1 % longitud del ciclo
                 const dayRoutine = cycle[(i - 1) % cycle.length];
                 
@@ -337,6 +344,18 @@
                     </div>
                 `;
             }
+
+            // 2. Añadir placeholders para completar la última semana
+            // El día 31 cae en Miércoles.
+            const totalSlots = daysInMonth; 
+            const remainingSlots = 7 - (totalSlots % 7); 
+            
+            if (remainingSlots < 7) {
+                for(let i = 0; i < remainingSlots; i++) {
+                     html += `<div class="calendar-day bg-transparent"></div>`;
+                }
+            }
+
             grid.innerHTML = html;
         }
 
@@ -363,8 +382,8 @@
                             '#A78BFA', /* R1 - Lavender */
                             '#C084FC', /* R2 - Purple */
                             '#F472B6', /* R3 - Pink-Violet */
-                            '#E879F9', /* Hombro - Magenta */
-                            '#9333EA'  /* Brazos - Strong Purple */
+                            '#F0A2F9', /* Hombro - Magenta Claro (Usado también para R4 en la UI) */
+                            '#6D28D9'  /* Brazos - Dark Violet (Color secundario para el chart) */
                         ],
                         borderRadius: 4
                     }]
