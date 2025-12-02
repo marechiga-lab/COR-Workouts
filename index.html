@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plan de Entrenamiento de Corina O.</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        
+        /* --- TEMA CLARO: Colores base ajustados --- */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f8f8; /* Fondo muy claro */
+            color: #1f2937; /* Texto oscuro */
+        }
+        .primary-color { color: #8B5CF6; } /* Violeta profundo de acento */
+        .bg-card { background-color: #ffffff; } /* Fondo de tarjeta blanco */
+        .bg-card-alt { background-color: #f0f0f0; } /* Fondo alternativo gris claro */
+        
+        /* --- ESTILOS DE ACORDEÓN --- */
+        .accordion-button { 
+            border-left: 4px solid #8B5CF6; /* Borde de acento oscuro */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Colores Específicos para tus Rutinas (SINCRONIZADOS CON CALENDARIO y CHART) */
+        /* Usamos los colores brillantes del chart y ajustamos el color del texto para el tema claro. */
+        
+        /* R1 - Lavender (Pierna/Glúteo - #A78BFA) -> Fondo brillante, Texto Oscuro */
+        .accordion-button.R1 { background-color: #A78BFA; color: #1f2937; } 
+
+        /* R2 - Purple (Pecho - #C084FC) -> Fondo brillante, Texto Oscuro */
+        .accordion-button.R2 { background-color: #C084FC; color: #1f2937; } 
+
+        /* R3 - Pink-Violet (Espalda - #F472B6) -> Fondo brillante, Texto Oscuro */
+        .accordion-button.R3 { background-color: #F472B6; color: #1f2937; } 
+
+        /* R4 - Strong Purple (Pierna - #9333EA) -> Fondo brillante, Texto Claro */
+        .accordion-button.R4 { background-color: #9333EA; color: #F3E8FF; } 
+
+        /* Descanso (sin cambios) */
+        .accordion-button.Descanso { background-color: #d1d5db; color: #1f2937; border-left-color: #6b7280; }
+
+        .accordion-button[aria-expanded="true"] {
+            /* Usamos el color primario de acento como fondo activo */
+            background-color: #8B5CF6; 
+            color: white; 
+            box-shadow: 0 4px 10px rgba(0,0,0, 0.2);
+            border-left-color: #8B5CF6 !important;
+        }
+        
+        .accordion-button[aria-expanded="true"] .accordion-arrow { transform: rotate(180deg); }
+        .accordion-arrow { transition: transform 0.2s ease-in-out; }
+
+        /* --- ESTILO PARA TACHAR EJERCICIOS --- */
+        .exercise-item {
+            cursor: pointer;
+            padding: 8px 0;
+            /* Borde más claro para el tema */
+            border-bottom: 1px solid #d1d5db; 
+            transition: color 0.2s, opacity 0.2s;
+            display: flex;
+            justify-content: space-between;
+        }
+        .exercise-item:last-child { border-bottom: none; }
+        .exercise-item:hover {
+            color: #8B5CF6; /* Usa el color primario/acento oscuro */
+        }
+        .exercise-item.completed {
+            text-decoration: line-through;
+            color: #a0a0a0; /* Gris medio para tachar */
+            opacity: 0.8;
+        }
+        .exercise-meta {
+            font-size: 0.85em;
+            color: #6b7280; /* Texto gris oscuro */
+            background: #e5e7eb; /* Fondo claro */
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        /* Fondo del contenido del acordeón: Blanco o muy claro */
+        .bg-card-alt > div:not(.accordion-button) {
+            background-color: #ffffff !important;
+            border-top: 1px solid #d1d5db !important;
+            color: #1f2937; /* Asegurar texto oscuro en el contenido */
+        }
+
+        /* --- Estilos del Calendario --- */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+        .calendar-day {
+            min-height: 80px; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; 
+            padding: 4px; 
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* Sombra más sutil */
+            opacity: 1; /* Opacidad completa */
+        }
+        
+        /* Etiquetas de Calendario - COLORES SINCRONIZADOS CON CHART (fondos brillantes) */
+        
+        /* R1 - Lavender (#A78BFA) -> Fondo brillante, Texto Oscuro */
+        .cal-R1 { background-color: #A78BFA; color: #1f2937; border: 1px solid #8B5CF6;} 
+        /* R2 - Purple (#C084FC) -> Fondo brillante, Texto Oscuro */
+        .cal-R2 { background-color: #C084FC; color: #1f2937; border: 1px solid #8B5CF6;} 
+        /* R3 - Pink-Violet (#F472B6) -> Fondo brillante, Texto Oscuro */
+        .cal-R3 { background-color: #F472B6; color: #1f2937; border: 1px solid #8B5CF6;} 
+        /* R4 - Strong Purple (#9333EA) -> Fondo brillante, Texto Claro */
+        .cal-R4 { background-color: #9333EA; color: #F3E8FF; border: 1px solid #8B5CF6;} 
+        
+        /* Día de descanso con fondo claro y texto oscuro */
+        .cal-Descanso { background-color: #d1d5db; color: #1f2937; border: 1px solid #9ca3af;}
+
+        .day-number { font-size: 1.1rem; margin-bottom: 2px; font-weight: bold; }
+        
+        .chart-container { position: relative; width: 100%; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="container mx-auto max-w-5xl">
+        
+        <!-- ENCABEZADO -->
+        <header class="text-center mb-10 p-6 bg-card rounded-xl shadow-lg border-b-4 border-[#8B5CF6]">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-[#111827] mb-2">
+                Plan de Entrenamiento de Corina O.
+            </h1>
+            <!-- Cita de Mike Tyson insertada aquí -->
+            <p class="text-lg italic text-gray-600">
+                "La disciplina es hacer lo que te conviene racionalmente, en vez de lo que es fácil o te da gusto" (Mike Tyson)
+            </p>
+        </header>
+
+        <!-- SECCIÓN 1: RESUMEN GRÁFICO -->
+        <section id="analysis" class="mb-12">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Tarjeta de Info -->
+                <div class="bg-card rounded-xl p-6 shadow-md flex flex-col justify-center items-center text-center border border-gray-200">
+                    <h3 class="text-xl font-bold text-[#1f2937] mb-4">Estructura del Plan</h3>
+                    <div class="flex gap-4 mb-4">
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <span class="block text-3xl font-bold text-[#A78BFA]">2</span>
+                            <span class="text-xs text-gray-500">Días Pierna</span>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <span class="block text-3xl font-bold text-[#C084FC]">2</span>
+                            <span class="text-xs text-gray-500">Días Torso</span>
+                        </div>
+                        <div class="bg-gray-100 p-4 rounded-lg">
+                            <span class="block text-3xl font-bold text-gray-500">Var</span>
+                            <span class="text-xs text-gray-500">Descanso</span>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-500">Rotación sugerida: R1 (Pierna) → R2 (Torso) → R3 (Torso) → R4 (Pierna) → Descanso</p>
+                </div>
+
+                <!-- Gráfica de Volumen -->
+                <div class="bg-card rounded-xl p-6 shadow-md border border-gray-200">
+                    <h3 class="text-lg font-bold text-center mb-2 text-[#1f2937]">Distribución de Series (Aprox)</h3>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: CALENDARIO SUGERIDO -->
+        <section id="calendar" class="mb-12">
+            <h2 class="text-2xl font-bold text-center primary-color mb-6">Calendario de Rotación (Ejemplo)</h2>
+            <div class="bg-card rounded-lg shadow-xl p-4 md:p-6 border border-gray-200">
+                <div class="calendar-grid text-sm text-gray-600 mb-2 font-bold">
+                    <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+                </div>
+                <div class="calendar-grid" id="calendar-grid-content">
+                    <!-- JS Inyectará los días aquí -->
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: LAS RUTINAS (ACORDEÓN) -->
+        <section id="daily-plan" class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-[#1f2937] mb-8">Tus 4 Rutinas</h2>
+            <div id="accordion-container" class="space-y-4">
+                <!-- JS Inyectará las rutinas aquí -->
+            </div>
+        </section>
+
+        <footer class="text-center text-gray-500 text-sm pb-8">
+            <p>Generado para Corina Ogarrio R. - Recuerda calentar antes de cada sesión. Eres increíble, no importa cuándo leas esto. MAM.</p>
+        </footer>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // --- 1. DATOS DE TUS RUTINAS ---
+        const routineData = {
+            'R1': { 
+                title: 'Rutina 1: Pierna / Glúteo / Abs', 
+                colorClass: 'R1',
+                exercises: [
+                    { name: 'A1: Sentadilla perfecta máquina', detail: '4 x 8' },
+                    { name: 'B1: Sentadilla búlgara mancuerna', detail: '3 x 8-10' },
+                    { name: 'C1: PM Rumano mancuerna (Sobre step)', detail: '4 x 8-10' },
+                    { name: 'D1: Extensión de rodilla Drop Set', detail: '4 x 8 + 15' },
+                    { name: 'E1: Aducción de cadera máquina pausa', detail: '4 x 12-15' },
+                    { name: 'F1: Costurera máquina', detail: '4 x 15-20' },
+                    { name: 'G1: Abs en circuito', detail: '3 x ?' }
+                ]
+            },
+            'R2': { 
+                title: 'Rutina 2: Pecho / Hombro / Espalda / Brazos', 
+                colorClass: 'R2',
+                exercises: [
+                    { name: 'A1: Press banca barra plano', detail: '4 x 6-8' },
+                    { name: 'B1: Press hombro barra sentado', detail: '4 x 8-10' },
+                    { name: 'C1: Remo sentado máquina', detail: '4 x 10-12' },
+                    { name: 'D1: Curl bíceps mancuerna', detail: '4 x 10-12' },
+                    { name: 'D2: Copas dos manos mancuerna', detail: '4 x 8-12' },
+                    { name: 'E1: Face pulls liga', detail: '3 x 15-20' },
+                    { name: 'F1: Extensión de codo soga', detail: '3 x 12-15' }
+                ]
+            },
+            'R3': { 
+                title: 'Rutina 3: Espalda / Pecho / Brazos / Lumbar', 
+                colorClass: 'R3',
+                exercises: [
+                    { name: 'A1: Remo polea abierto', detail: '4 x 10-12' },
+                    { name: 'B1: Press inclinado barra', detail: '4 x 8-10' },
+                    { name: 'C1: Pull over polea', detail: '4 x 12-15' },
+                    { name: 'D1: Curl bíceps banco Scott', detail: '4 x 8-10' },
+                    { name: 'E1: Copa con soga polea', detail: '4 x 12' },
+                    { name: 'F1: Hiperextensión espalda 60°', detail: '4 x 15-20' }
+                ]
+            },
+            'R4': { 
+                title: 'Rutina 4: Pierna / Glúteo (Enfoque)', 
+                colorClass: 'R4',
+                exercises: [
+                    { name: 'A1: Elevación de cadera barra (Hip Thrust)', detail: '4 x 6-10' },
+                    { name: 'B1: Prensa Inclinada', detail: '4 x 8-12' },
+                    { name: 'C1: Sentadilla Sissy mancuerna', detail: '4 x 12-15' },
+                    { name: 'D1: Abducción de cadera máquina', detail: '4 x 12 + 15' },
+                    { name: 'E1: Leg curl máquina unilateral', detail: '3 x 10-12' },
+                    { name: 'F2: Elevación de tibial anterior', detail: '3 x 10-20' }
+                ]
+            }
+        };
+
+        // --- 2. GENERAR ACORDEÓN ---
+        function renderAccordion() {
+            const container = document.getElementById('accordion-container');
+            let html = '';
+
+            Object.keys(routineData).forEach((key, index) => {
+                const r = routineData[key];
+                
+                let listHtml = '';
+                r.exercises.forEach((ex, i) => {
+                    listHtml += `
+                        <li class="exercise-item" onclick="this.classList.toggle('completed')">
+                            <span class="font-medium text-[#374151]">${ex.name}</span>
+                            <span class="exercise-meta">${ex.detail}</span>
+                        </li>`;
+                });
+
+                html += `
+                    <div class="bg-card-alt rounded-lg shadow overflow-hidden border border-gray-200">
+                        <button class="accordion-button ${r.colorClass} w-full p-5 flex justify-between items-center" 
+                                onclick="toggleAccordion(this)">
+                            <span class="font-bold text-lg">${r.title}</span>
+                            <span class="accordion-arrow text-xl">▼</span>
+                        </button>
+                        <div class="hidden p-5 bg-[#ffffff] border-t border-gray-300">
+                            <ul class="list-none m-0 p-0">
+                                ${listHtml}
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+        }
+
+        function toggleAccordion(btn) {
+            const content = btn.nextElementSibling;
+            const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+            
+            // Cerrar otros
+            document.querySelectorAll('.accordion-button').forEach(b => {
+                b.setAttribute('aria-expanded', 'false');
+                b.nextElementSibling.classList.add('hidden');
+            });
+
+            if (!isExpanded) {
+                btn.setAttribute('aria-expanded', 'true');
+                content.classList.remove('hidden');
+            }
+        }
+
+        // --- 3. GENERAR CALENDARIO (ROTACIÓN SIMPLE) ---
+        function renderCalendar() {
+            const grid = document.getElementById('calendar-grid-content');
+            const cycle = [
+                { id: 'R1', label: 'Rutina 1', css: 'cal-R1' },
+                { id: 'R2', label: 'Rutina 2', css: 'cal-R2' },
+                { id: 'R3', label: 'Rutina 3', css: 'cal-R3' },
+                { id: 'R4', label: 'Rutina 4', css: 'cal-R4' },
+                { id: 'Rest', label: 'Descanso', css: 'cal-Descanso' }
+            ];
+
+            // Empezamos un día cualquiera (ej: día 1 del mes)
+            let html = '';
+            // Se añaden 2 placeholders para que el calendario comience en Miércoles
+            html += `<div class="calendar-day bg-transparent"></div>`; 
+            html += `<div class="calendar-day bg-transparent"></div>`; 
+
+            for(let i = 1; i <= 30; i++) {
+                // Algoritmo de rotación simple: i-1 % longitud del ciclo
+                const dayRoutine = cycle[(i - 1) % cycle.length];
+                
+                html += `
+                    <div class="calendar-day ${dayRoutine.css}">
+                        <span class="day-number">${i}</span>
+                        <span>${dayRoutine.label}</span>
+                    </div>
+                `;
+            }
+            grid.innerHTML = html;
+        }
+
+        // --- 4. GRÁFICA DE VOLUMEN (PROMEDIO) ---
+        function initChart() {
+            const ctx = document.getElementById('volumeChart').getContext('2d');
+            
+            // Datos aproximados basados en conteo de series de tus rutinas
+            // R1+R4 (Pierna) vs R2+R3 (Torso)
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Pierna/Glúteo', 'Pecho', 'Espalda', 'Hombro', 'Brazos'],
+                    datasets: [{
+                        label: 'Series Totales en el Ciclo',
+                        data: [
+                            43, // Suma aprox de series de pierna en R1 y R4
+                            20, // Suma aprox series pecho R2 y R3
+                            20, // Suma aprox series espalda R2 y R3
+                            15, // Hombro directo
+                            22  // Brazos (Bíceps + Tríceps)
+                        ],
+                        backgroundColor: [
+                            '#A78BFA', /* R1 - Lavender */
+                            '#C084FC', /* R2 - Purple */
+                            '#F472B6', /* R3 - Pink-Violet */
+                            '#E879F9', /* Hombro - Magenta */
+                            '#9333EA'  /* Brazos - Strong Purple */
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: '#d1d5db' }, ticks: { color: '#4b5563' } },
+                        x: { grid: { display: false }, ticks: { color: '#4b5563', font: {size: 10} } }
+                    }
+                }
+            });
+        }
+
+        // --- INICIALIZAR ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderAccordion();
+            renderCalendar();
+            initChart();
+        });
+    </script>
+</body>
+</html>
